@@ -2,7 +2,7 @@
 
 class Base
 {
-    public static function test(){
-        echo 'hello';
+    public static function res($path){
+        return __dir__.'/res/'.$path;
     }
 }
