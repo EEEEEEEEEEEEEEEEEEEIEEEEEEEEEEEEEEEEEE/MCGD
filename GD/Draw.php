@@ -14,12 +14,6 @@ class Draw
         'background'=>'white.jpg',
         'plugin'=>[
             [
-                'plugin'=>'Pain',
-                'name'=>'T',
-                'input'=>[
-                    'text'=>'你好，世界。'
-                ]
-            ],[
                 'plugin'=>'Time',
                 'input'=>[
                     'type'=>'Y-m-d h:i:sa'
@@ -50,7 +44,7 @@ class Draw
     }
     private function plugin(){
         foreach($this->draw['plugin'] as $plugin){
-            $plugin_class='\\Plugin\\'.$plugin['plugin'];
+            $plugin_class='\\Plugin\\'.$plugin['plugin'].'\\Main';
             $p=new $plugin_class();
             $replace_all=$p->run($plugin['input']);
             foreach($replace_all as $key => $value){
