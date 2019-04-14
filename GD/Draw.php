@@ -19,11 +19,16 @@ class Draw
                 'input'=>[
                     'text'=>'你好，世界。'
                 ]
+            ],[
+                'plugin'=>'Time',
+                'input'=>[
+                    'type'=>'Y-m-d h:i:sa'
+                ]
             ]
         ],
         'draw'=>[
             [
-                'text'=>'test<?text?>',
+                'text'=>'test<?T->text?>'."\n".'<?time?>',
                 'size'=>28,
                 'x'=>0,
                 'y'=>0,
@@ -49,6 +54,9 @@ class Draw
             $p=new $plugin_class();
             $replace_all=$p->run($plugin['input']);
             foreach($replace_all as $key => $value){
+                if(!is_null(@$plugin['name'])){
+                    $key=$plugin['name'].'->'.$key;
+                }
                 $this->replace[$key]=$value;
             }
         }
