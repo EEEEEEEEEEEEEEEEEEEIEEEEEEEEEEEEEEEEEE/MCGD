@@ -14,9 +14,6 @@ class Autoloader
         if (file_exists($filePath)) {
             require_once($filePath);
             return;
-        } else {
-            echo "failure:" . $filePath;
         }
-
     }
 }
