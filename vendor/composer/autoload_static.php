@@ -7,6 +7,11 @@ namespace Composer\Autoload;
 class ComposerStaticInit504a05de58570504ba9a99db0c76af10
 {
     public static $prefixLengthsPsr4 = array (
+        'M' => 
+        array (
+            'MinecraftServerStatus\\Packets\\' => 30,
+            'MinecraftServerStatus\\' => 22,
+        ),
         'G' => 
         array (
             'Grafika\\' => 8,
@@ -14,6 +19,14 @@ class ComposerStaticInit504a05de58570504ba9a99db0c76af10
     );
 
     public static $prefixDirsPsr4 = array (
+        'MinecraftServerStatus\\Packets\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/funnyitselmo/minecraftserverstatus/src/Packets',
+        ),
+        'MinecraftServerStatus\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/funnyitselmo/minecraftserverstatus/src',
+        ),
         'Grafika\\' => 
         array (
             0 => __DIR__ . '/..' . '/kosinix/grafika/src/Grafika',

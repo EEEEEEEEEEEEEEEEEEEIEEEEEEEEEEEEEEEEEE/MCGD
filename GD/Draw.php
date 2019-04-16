@@ -14,15 +14,23 @@ class Draw
         'background'=>'white.jpg',
         'plugin'=>[
             [
-                'plugin'=>'Time',
+                'plugin'=>'Mcstatus',
+                'name'=>'T',
                 'input'=>[
-                    'type'=>'Y-m-d h:i:sa'
+                    'host'=>'play.mcyc.win',
+                    'port'=>25565
+                ]
+            ].[
+                'plugin'=>'Time',
+                'name'=>'Timne',
+                'input'=>[
+                    'type'=>'play.mcyc.win'
                 ]
             ]
         ],
         'draw'=>[
             [
-                'text'=>'test<?T->text?>'."\n".'<?time?>',
+                'text'=>'<?T->motd?>'."\n".'<?Time->time?>',
                 'size'=>28,
                 'x'=>0,
                 'y'=>0,

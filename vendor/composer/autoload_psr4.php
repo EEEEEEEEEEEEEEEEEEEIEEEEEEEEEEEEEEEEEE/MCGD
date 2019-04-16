@@ -6,5 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'MinecraftServerStatus\\Packets\\' => array($vendorDir . '/funnyitselmo/minecraftserverstatus/src/Packets'),
+    'MinecraftServerStatus\\' => array($vendorDir . '/funnyitselmo/minecraftserverstatus/src'),
     'Grafika\\' => array($vendorDir . '/kosinix/grafika/src/Grafika'),
 );

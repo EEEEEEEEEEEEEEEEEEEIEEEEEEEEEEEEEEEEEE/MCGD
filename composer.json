@@ -1,5 +1,6 @@
 {
     "require": {
-        "kosinix/grafika": "dev-master"
+        "kosinix/grafika": "dev-master",
+        "funnyitselmo/minecraftserverstatus": "^1.0"
     }
 }
