@@ -6,7 +6,7 @@ class Main
 {
     public function run($input){
         $response = MinecraftServerStatus::query($input['host'], $input['port']);
-        var_dump($response);
+        //var_dump($response);
         if(@$response['description_raw']->extra){
             $motd=$this::motd_extra($response['description_raw']->extra);
         }elseif(@$response['description_raw']->translate){

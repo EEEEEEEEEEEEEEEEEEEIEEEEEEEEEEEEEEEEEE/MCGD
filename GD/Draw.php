@@ -9,8 +9,8 @@ class Draw
     private $main;
     public $replace=[];
     public $draw=[
-        'width'=>100,
-        'height'=>100,
+        'width'=>'100',
+        'height'=>'100',
         'background'=>'white.jpg',
         'plugin'=>[
             [
@@ -20,9 +20,9 @@ class Draw
                     'host'=>'play.mcyc.win',
                     'port'=>25565
                 ]
-            ].[
+            ],[
                 'plugin'=>'Time',
-                'name'=>'Timne',
+                'name'=>'Time',
                 'input'=>[
                     'type'=>'play.mcyc.win'
                 ]
@@ -31,24 +31,24 @@ class Draw
         'draw'=>[
             [
                 'text'=>'<?T->motd?>'."\n".'<?Time->time?>',
-                'size'=>28,
+                'size'=>12,
                 'x'=>0,
                 'y'=>0,
                 'color'=>'#000000',
                 'font'=>'msyh.ttf',
-                'angle'=>0,
+                'angle'=>330
             ]
         ]
     ];
     public function main(){
         $this->plugin();
-        $this->editor = Grafika::createEditor();
-        $this->editor->open($this->main, Base::res('image/'.$this->draw['background']));
+        $this->main=imagecreatefromstring(file_get_contents(Base::res('image/'.$this->draw['background'])));
         foreach($this->draw['draw'] as $draw){
-            $this->editor->text($this->main, $this->replace($draw['text']), $draw['size'], $draw['x'], $draw['y'],
-                new Color($draw['color']), Base::res('font/'.$draw['font']),$draw['angle'] );
+            $this->draw_color($this->replace($draw['text']),$draw['x'],$draw['y'],$draw['size'],Base::res('font/msyh.ttf'),$draw['angle']);
         }
-        $this->editor->save($this->main,'t.jpg','jpg');
+        $color=imagecolorallocate($this->main,255,0,0);
+        imagefttext($this->main, 12, 0, 50, 50, $color, Base::res('font/'.$draw['font']), time());
+        imagepng($this->main,'C:\Users\Administrator\PhpstormProjects\MCGD\t.png');
     }
     private function plugin(){
         foreach($this->draw['plugin'] as $plugin){
@@ -68,5 +68,47 @@ class Draw
             $str=str_ireplace('<?'.$key.'?>',$value,$str);
         }
         return $str;
+    }
+
+    private function draw_color($color_raw, $x=12, $y=12, $size=12, $font, $angle=0,$fy=false){
+        $lines=explode("\n",$color_raw);
+        //var_dump($lines);
+        $ny=$y;
+        if(!$fy){
+            $fy=$size;
+        }
+
+        foreach($lines as $line){
+            $raws=explode('§',$line);
+            //var_dump($raws);
+            $color=imagecolorallocate($this->main,255,255,255);
+            $nx=$x;
+            $ny=$y;
+            $sety=true;
+            foreach ($raws as $raw) {
+                if(@Base::color_code(substr($raw,0,1))){
+                    $color_code=Base::color_code(substr($raw,0,1));
+                    $color=imagecolorallocate($this->main,
+                        Base::code_color($color_code)[0],
+                        Base::code_color($color_code)[1],
+                        Base::code_color($color_code)[2]);
+                    //var_dump(Base::code_color($color_code));
+                    $text=substr($raw,1);
+                }else{
+                    $text=$raw;
+                }
+                echo $text;
+                var_dump($ny);
+                $box=imagettfbbox($size, $angle, $font, $text);
+                imagefttext($this->main, $size, $angle, $nx, $ny, $color, $font, $text);
+                $nx += $box[2];
+                $ny += $box[3]-$box[1];
+                var_dump(imagettfbbox($size, $angle, $font, $text));
+                if($sety&&$text!=''){
+                    $y+=$box[1]-$box[7];
+                    $sety=false;
+                }
+            }
+        }
     }
 }

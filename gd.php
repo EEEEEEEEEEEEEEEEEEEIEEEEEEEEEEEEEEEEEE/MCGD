@@ -4,4 +4,4 @@ use GD\Draw;
 $controller=new Draw();
 $controller->main();
 ?>
-<img src="t.jpg" />
+<img src="t.png" />
