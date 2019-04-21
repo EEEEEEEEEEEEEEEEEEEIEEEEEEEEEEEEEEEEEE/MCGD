@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\Mcstatus;
+namespace App\Plugin\Mcstatus;
 use Base;
 use MinecraftServerStatus\MinecraftServerStatus;
 class Main

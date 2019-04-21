@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\Time;
+namespace App\Plugin\Time;
 class Main
 {
     public function run($input){
