@@ -5,38 +5,7 @@ class Draw
 {
     private $main;
     public $replace=[];
-    public $draw=[
-        'width'=>'100',
-        'height'=>'100',
-        'background'=>'white.jpg',
-        'plugin'=>[
-            [
-                'plugin'=>'Mcstatus',
-                'name'=>'T',
-                'input'=>[
-                    'host'=>'mc.hypixel.net',
-                    'port'=>25565
-                ]
-            ],[
-                'plugin'=>'Time',
-                'name'=>'Time',
-                'input'=>[
-                    'type'=>'h:i:sa'
-                ]
-            ]
-        ],
-        'draw'=>[
-            [
-                'text'=>'<?T->motd?>'."\n".'<?Time->time?>',
-                'size'=>12,
-                'x'=>0,
-                'y'=>0,
-                'color'=>'#000000',
-                'font'=>'msyh.ttf',
-                'angle'=>0
-            ]
-        ]
-    ];
+    public $draw=[];
     public function main($str){
         $data=json_decode($str);
         $this->draw=$this->read($data);
