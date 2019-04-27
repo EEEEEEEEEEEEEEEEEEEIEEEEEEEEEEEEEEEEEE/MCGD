@@ -8,16 +8,16 @@
                 <div class="card-header">Dashboard</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    You are logged in!
+                    <textarea id="editor_holder">{{ $server_data }}</textarea>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    var element = document.getElementById('editor_holder')
+    var editor = new JSONEditor(element, {
+        theme: 'bootstrap2'
+    });
+</script>
 @endsection

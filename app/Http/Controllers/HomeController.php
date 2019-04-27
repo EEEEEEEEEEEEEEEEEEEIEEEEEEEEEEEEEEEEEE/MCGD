@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Grpc\Server;
 use Illuminate\Http\Request;
+use App\Servers;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if(Auth::check()) {
+            $server = Servers::where('user_id', '=', Auth::id())->first();
+            if (!$server) {
+                $server = new Servers();
+                $server->user_id = Auth::id();
+                $server->data = '';
+                $server->saveOrFail();
+            }
+            return view('home')->with([
+                'server_data' => $server->data
+            ]);
+        }else{
+          abort(404);
+        }
     }
 }
