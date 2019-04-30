@@ -19,11 +19,6 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
         if(Auth::check()) {
@@ -35,10 +30,26 @@ class HomeController extends Controller
                 $server->saveOrFail();
             }
             return view('home')->with([
-                'server_data' => $server->data
+                'server_data' =>json_encode(json_decode($server->data),JSON_PRETTY_PRINT)
             ]);
         }else{
           abort(404);
+        }
+    }
+
+    public function save(Request $request)
+    {
+        if(Auth::check()) {
+            $server = Servers::where('user_id', '=', Auth::id())->first();
+            if(!$server){
+                $server=new Server();
+            }
+            $server->data = $request->input('data');
+            $server->saveOrFail();
+
+            return $this->index();
+        }else{
+            abort(404);
         }
     }
 }

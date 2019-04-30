@@ -18,5 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/home', 'HomeController@save')->name('home');
 
-Route::get('/-{id}', 'DrawController@draw')->name('draw');
+Route::get('/-{id}', 'DrawController@png')->name('draw');
+Route::post('/-/base64', 'DrawController@base64')->name('base64');

@@ -16,8 +16,11 @@ class Draw
         }
         $color=imagecolorallocate($this->main,255,0,0);
         imagefttext($this->main, 12, 0, 50, 50, $color, Base::res('font/'.$draw['font']), time());
-        imagepng($this->main,'C:\\Users\\Administrator\\PhpstormProjects\\MCGD\\public\\t.png');
-        return'<img src="t.png">';
+        ob_start();
+        imagepng($this->main);
+        $op=ob_get_contents();
+        ob_end_clean();
+        return $op;
     }
     private function read(&$object){
         if (is_object($object)) {
