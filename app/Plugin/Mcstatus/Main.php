@@ -5,8 +5,21 @@ use MinecraftServerStatus\MinecraftServerStatus;
 class Main
 {
     public function run($input){
-        $response = MinecraftServerStatus::query($input['host'], $input['port']);
-        //var_dump($response);
+        $arr=explode(':',$input['host']);
+        if(@$arr[1]){
+            $host=$arr[0];
+            $port=$arr[1];
+        }else{
+            $data=dns_get_record('_minecraft._tcp.'.$arr[0],DNS_SRV);
+            if($data){
+                $host=$data[0]['target'];
+                $port=$data[0]['port'];
+            }else{
+                $host=$arr[0];
+                $port=25565;
+            }
+        }
+        $response = MinecraftServerStatus::query($host, $port);
         if(@$response['description_raw']->extra){
             $motd=$this::motd_extra($response['description_raw']->extra);
         }elseif(@$response['description_raw']->translate){
