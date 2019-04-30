@@ -57,9 +57,19 @@ class Draw
         }
         return $str;
     }
-    private function replace(string $str){
+    private function replace(string $str,array $had=[]){
         foreach($this->replace as $key=>$value){
-            $str=str_ireplace('<?'.$key.'?>',$value,$str);
+            if(@$had[$key]){
+                continue;
+            }else{
+                if(strpos($str,'<?'.$key.'?>')===false){
+                    continue;
+                }else{
+                    $arr=$had;
+                    $arr[$key]=true;
+                    $str=str_ireplace('<?'.$key.'?>',$this->replace($value,$arr),$str);
+                }
+            }
         }
         return $str;
     }
