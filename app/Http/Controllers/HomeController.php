@@ -30,7 +30,7 @@ class HomeController extends Controller
                 $server->saveOrFail();
             }
             return view('home')->with([
-                'server_data' =>json_encode(json_decode($server->data),JSON_PRETTY_PRINT)
+                'server_data' =>json_encode(json_decode($server->data),JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE)
             ]);
         }else{
           abort(404);
@@ -44,7 +44,7 @@ class HomeController extends Controller
             if(!$server){
                 $server=new Server();
             }
-            $server->data = $request->input('data');
+            $server->data = json_encode(json_decode($request->input('data')));
             $server->saveOrFail();
 
             return $this->index();

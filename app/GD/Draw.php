@@ -5,17 +5,20 @@ class Draw
 {
     private $main;
     public $replace=[];
+    public $img=[];
     public $draw=[];
     public function main($str){
         $data=json_decode($str);
         $this->draw=$this->read($data);
         $this->plugin();
         $this->main=imagecreatefromstring(file_get_contents(Base::res('image/'.$this->draw['background'])));
+        foreach($this->draw['img'] as $img){
+            $src=imagecreatefromstring($this->img[$img['data']]);
+            imagecopyresized($this->main,$src,$img['x'],$img['y'],0,0,$img['width'],$img['height'],imagesx($src),imagesy($src));
+        }
         foreach($this->draw['draw'] as $draw){
             $this->draw_color($this->replace($draw['text']),$draw['x'],$draw['y'],$draw['size'],Base::res('font/msyh.ttf'),$draw['angle']);
         }
-        $color=imagecolorallocate($this->main,255,0,0);
-        imagefttext($this->main, 12, 0, 50, 50, $color, Base::res('font/'.$draw['font']), time());
         ob_start();
         imagepng($this->main);
         $op=ob_get_contents();
@@ -42,12 +45,18 @@ class Draw
             foreach ($plugin['input'] as $key=>$value){
                 $plugin['input'][$key]=$this->input($value);
             }
-            $replace_all=$p->run($plugin['input']);
-            foreach($replace_all as $key => $value){
+            $p->run($plugin['input']);
+            foreach($p->text as $key => $value){
                 if(!is_null(@$plugin['name'])){
                     $key=$plugin['name'].'->'.$key;
                 }
                 $this->replace[$key]=$value;
+            }
+            foreach($p->img as $key => $value){
+                if(!is_null(@$plugin['name'])){
+                    $key=$plugin['name'].'->'.$key;
+                }
+                $this->img[$key]=$value;
             }
         }
     }
@@ -80,8 +89,9 @@ class Draw
             $color=imagecolorallocate($this->main,255,255,255);
             $nx=$x;
             $ny=$y;
+            $isf=true;
             foreach ($raws as $raw) {
-                if(@Base::color_code(substr($raw,0,1))){
+                if(@Base::color_code(substr($raw,0,1)) && !$isf){
                     $color_code=Base::color_code(substr($raw,0,1));
                     $color=imagecolorallocate($this->main,
                         Base::code_color($color_code)[0],
@@ -91,6 +101,7 @@ class Draw
                 }else{
                     $text=$raw;
                 }
+                $isf=false;
                 $box=imagettfbbox($size, $angle, $font, $text);
                 imagefttext($this->main, $size, $angle, $nx, $ny-$box[7]+2, $color, $font, $text);
                 $nx += $box[2];

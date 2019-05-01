@@ -1,9 +1,11 @@
 <?php
 namespace App\Plugin\Mcstatus;
-use Base;
+use App\Base;
 use MinecraftServerStatus\MinecraftServerStatus;
 class Main
 {
+    public $text=[];
+    public $img=[];
     public function run($input){
         $arr=explode(':',$input['host']);
         if(@$arr[1]){
@@ -31,7 +33,7 @@ class Main
         }else{
             $motd='Wrong';
         }
-        return [
+        $this->text = [
             'players'=>$response['players'],
             'max_players'=>$response['max_players'],
             'ping'=>$response['ping'],
@@ -41,11 +43,14 @@ class Main
             'mod_count'=>@count(@$response['modinfo']->modList),
             'mod_type'=>@$response['modinfo']->type,
         ];
+        $this->img=[
+            'icon'=>base64_decode(substr($response['favicon'],22))
+        ];
     }
     private function motd_extra($extra){
         $motd='';
         foreach ($extra as $raw) {
-            $motd.=Base::$color_code[$raw->color].$raw->text;
+            $motd.='§'.Base::color_code($raw->color).$raw->text;
         }
         return $motd;
     }

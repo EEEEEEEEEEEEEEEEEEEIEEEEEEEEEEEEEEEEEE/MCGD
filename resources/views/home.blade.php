@@ -34,7 +34,8 @@
     editor.session.setMode("ace/mode/json");
     editor.renderer.setScrollMargin(10, 10);
     editor.setOptions({
-        autoScrollEditorIntoView: true
+        autoScrollEditorIntoView: true,
+        wrap: 'free'
     });
     document.getElementById("sub").addEventListener('click',function () {
         try {

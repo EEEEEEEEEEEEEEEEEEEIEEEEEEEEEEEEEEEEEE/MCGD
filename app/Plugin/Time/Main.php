@@ -2,8 +2,10 @@
 namespace App\Plugin\Time;
 class Main
 {
+    public $text=[];
+    public $img=[];
     public function run($input){
-        return [
+        $this->text=[
             'time'=>date($input['type'])
         ];
     }

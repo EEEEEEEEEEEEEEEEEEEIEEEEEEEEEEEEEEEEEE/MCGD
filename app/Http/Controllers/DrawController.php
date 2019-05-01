@@ -11,7 +11,7 @@ class DrawController extends Controller
         $server=Servers::findOrFail($id);
         $controller=new Draw();
         return response($controller->main($server->data),200)
-            ->header('Content-Type', 'image/png');
+           ->header('Content-Type', 'image/png');
     }
     public function base64(Request $request){
         $data=$request->input('data');
