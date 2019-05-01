@@ -11,7 +11,9 @@ class Draw
         $data=json_decode($str);
         $this->draw=$this->read($data);
         $this->plugin();
-        $this->main=imagecreatefromstring(file_get_contents(Base::res('image/'.$this->draw['background'])));
+        $bg=imagecreatefromstring(file_get_contents(Base::res('image/'.$this->draw['background'])));
+        $this->main= imagecreatetruecolor($this->draw['width'],$this->draw['height']);
+        imagecopyresized($this->main,$bg,0,0,0,0,$this->draw['width'],$this->draw['height'],imagesx($bg),imagesy($bg));
         foreach($this->draw['img'] as $img){
             $src=imagecreatefromstring($this->img[$img['data']]);
             imagecopyresized($this->main,$src,$img['x'],$img['y'],0,0,$img['width'],$img['height'],imagesx($src),imagesy($src));

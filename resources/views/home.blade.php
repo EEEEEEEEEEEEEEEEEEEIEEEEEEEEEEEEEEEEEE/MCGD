@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('css')
 <link href="{{ asset('css/main.min.css') }}" rel="stylesheet">
+    <style>
+        @media screen and (min-width: 1000px) {
+            .ppf {position: fixed;top:10%;right:0;height:90%;}
+        }
+    </style>
 @endsection
 @section('js')
 <script src="{{ asset('js/ace.js') }}" ></script>
@@ -9,24 +14,36 @@
 <script src="{{ asset('js/worker-json.js') }}" ></script>
 @endsection
 @section('content')
-    <img id="img"/>
-    <div class="container">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">
-                        <button id="sub" class="btn btn-primary">保存</button>
-                        <button id="vie" class="btn btn-primary">预览</button>
-                    </div>
 
-                    <div class="card-body">
-                        <form id="mainform" action="{{ Route('home') }}" method="post">
-                             @csrf
-                            <pre id="editor" style="width:100%">{{ $server_data }}</pre>
-                            <input id="data" name="data" type="hidden">
-                        </form>
-                    </div>
+    <div class="container">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    代码编辑
+                </div>
+
+                <div class="card-body">
+                    <form id="mainform" action="{{ Route('home') }}" method="post">
+                         @csrf
+                        <pre id="editor" style="width:100%">{{ $server_data }}</pre>
+                        <input id="data" name="data" type="hidden">
+                    </form>
                 </div>
             </div>
+        </div>
+        <div class="col-md-4 ppf" style="height:90%;">
+            <div class="card" style="height: 100%;">
+                <div class="card-header">
+                    <button id="sub" class="btn btn-primary">保存</button>
+                    <button id="vie" class="btn btn-primary">预览</button>
+                </div>
+
+                <div class="card-body" style="height: 80%;overflow-y: scroll;">
+                    <img id="img" style="width:100%;"/>
+                    <div id="debug"></div>
+                </div>
+            </div>
+        </div>
     </div>
 <script defer>
     var editor = ace.edit("editor");
@@ -57,7 +74,17 @@
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function(){
                     if(xhr.readyState == 4){
-                        document.getElementById('img').src=xhr.responseText;
+                        var json=JSON.parse(xhr.responseText);
+                        document.getElementById('img').src=json.url;
+                        var f1='<table border="1"><tr><th>Key</th><th>Value</th></tr>';
+                        for(let k in json.replace) {
+                            f1+='<tr><th>'+k+'</th><th>'+json.replace[k]+'</th></tr>';
+                        }
+                        for(let k in json.img) {
+                            f1+='<tr><th>'+k+'</th><th><img src="'+json.img[k]+'"/></th></tr>';
+                        }
+                        f1+='</table>';
+                        document.getElementById('debug').innerHTML=f1;
                     }
                 };
                 xhr.open('POST','{{ route('base64') }}',true);
