@@ -78,10 +78,10 @@
                         document.getElementById('img').src=json.url;
                         var f1='<table border="1"><tr><th>Key</th><th>Value</th></tr>';
                         for(let k in json.replace) {
-                            f1+='<tr><th>'+k+'</th><th>'+json.replace[k]+'</th></tr>';
+                            f1+='<tr><th>'+htmlEncode(k)+'</th><th>'+htmlEncode(json.replace[k])+'</th></tr>';
                         }
                         for(let k in json.img) {
-                            f1+='<tr><th>'+k+'</th><th><img src="'+json.img[k]+'"/></th></tr>';
+                            f1+='<tr><th>'+htmlEncode(k)+'</th><th><img src="'+json.img[k]+'"/></th></tr>';
                         }
                         f1+='</table>';
                         document.getElementById('debug').innerHTML=f1;
@@ -100,5 +100,10 @@
             alert("格式不正确");
         }
     });
+    function htmlEncode(str) {
+        var div = document.createElement("tteemmpp");
+        div.appendChild(document.createTextNode(str));
+        return div.innerHTML;
+    }
 </script>
 @endsection

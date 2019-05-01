@@ -100,8 +100,10 @@ class Draw
                         Base::code_color($color_code)[1],
                         Base::code_color($color_code)[2]);
                     $text=substr($raw,1);
-                }else{
+                }elseif($isf){
                     $text=$raw;
+                }else{
+                    $text='§'.$raw;
                 }
                 $isf=false;
                 $box=imagettfbbox($size, $angle, $font, $text);
