@@ -10,6 +10,7 @@ MCGD是一个几乎免费的贴图工程。为什么说几乎免费呢?因为我
 
 ```
 composer install
+npm install
 npm run dev
 ```
 在配置.env完成后运行
