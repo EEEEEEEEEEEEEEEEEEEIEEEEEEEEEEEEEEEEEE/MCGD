@@ -73,8 +73,12 @@
             if(typeof obj == 'object' && obj ){
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function(){
-                    if(xhr.readyState == 4){
-                        var json=JSON.parse(xhr.responseText);
+                    if(xhr.responseText){
+						try{
+							var json=JSON.parse(xhr.responseText);
+						}catch(e) {
+							document.getElementById('debug').innerHTML=xhr.responseText;
+						}
                         document.getElementById('img').src=json.url;
                         var f1='<table border="1"><tr><th>Key</th><th>Value</th></tr>';
                         for(let k in json.replace) {
