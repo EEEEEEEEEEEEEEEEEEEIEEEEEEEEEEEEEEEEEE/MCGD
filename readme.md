@@ -9,12 +9,12 @@ MCGD是一个几乎免费的贴图工程。为什么说几乎免费呢?因为我
 ## Part.1 安装
 
 ```
-    composer install
-    npm run dev
+composer install
+npm run dev
 ```
 在配置.env完成后运行
 ```
-    php artisan migrate
+php artisan migrate
 ```
 ## Part.2 推荐
 
