@@ -42,7 +42,7 @@ class HomeController extends Controller
     public function save(Request $request)
     {
         if(Auth::check()) {
-            $server = Servers::saveOrFail($request->input('server'));
+            $server = Servers::findOrFail($request->input('server'));
  
             $server->data = json_encode(json_decode($request->input('data')));
             $server->saveOrFail();
