@@ -3,16 +3,24 @@
 namespace App\Http\Controllers;
 use App\Servers;
 use App\GD\Draw;
+use App\Base;
 use Illuminate\Http\Request;
 
 class DrawController extends Controller
 {
     public function png($id){
+		if(@session('time')+100<time()){
+			session(['time'=>time()]);
+			return response(file_get_contents(Base::res('default/main.png')),200)
+           ->header('Content-Type','image/png')
+		   ->header('refresh','1');
+		}
         $server=Servers::findOrFail($id);
         $controller=new Draw($server,$server->data);
+		session(['time'=>0]);
         return response($controller->main(),200)
            ->header('Content-Type','image/png')
-		   ->header('refresh','10');
+		   ->header('Cache-Control','Private');
     }
     public function base64(Request $request){
 		$data=$request->input('data');
