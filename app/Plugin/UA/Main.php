@@ -8,15 +8,30 @@ class Main
 {
     public $text=[];
     public $img=[];
+	public $server;
+	public function __construct($server){
+		$this->server=$server;
+	}
     public function run($input){
 		$provider = new WhichBrowser();
 		$result = $provider->parse($_SERVER['HTTP_USER_AGENT']);
-		$city = new \ipip\db\City(__dir__ .'\ipipfree.ipdb');
+		try{
+			$city = new \ipip\db\City(__dir__ .'\ipipfree.ipdb');
+			$ci=$city->find(Request::getClientIp(), 'CN');
+		}catch(\InvalidArgumentException $e){
+			$ci=[];
+		}
+		$info='';
+		foreach($ci as $pc){
+			if($ci){
+				$info.=','.$pc;
+			}
+		}
         $this->text=[
             'browser'=>$result->getBrowser()->getName(),
 			'os'=>$result->getOperatingSystem()->getName(),
 			'device'=>$result->getDevice()->getBrand(),
-			'city'=>$city->find(Request::getClientIp(), 'CN')[2]
+			'city'=>$info
         ];
     }
 }

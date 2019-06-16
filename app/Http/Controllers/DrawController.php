@@ -9,14 +9,16 @@ class DrawController extends Controller
 {
     public function png($id){
         $server=Servers::findOrFail($id);
-        $controller=new Draw();
-        return response($controller->main($server->data),200)
-           ->header('Content-Type', 'image/png');
+        $controller=new Draw($server,$server->data);
+        return response($controller->main(),200)
+           ->header('Content-Type','image/png')
+		   ->header('refresh','10');
     }
     public function base64(Request $request){
 		$data=$request->input('data');
-		$controller=new Draw();
-		$ret['url']='data:image/png;base64,'.base64_encode($controller->main($data));
+		$server=Servers::findOrFail($request->input('server'));
+		$controller=new Draw($server,$data);
+		$ret['url']='data:image/png;base64,'.base64_encode($controller->main());
 		$ret['replace']=$controller->replace;
 		$ret['img']=[];
 		foreach ($controller->img as $key=>$img) {

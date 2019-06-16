@@ -7,9 +7,13 @@ class Draw
     public $replace=[];
     public $img=[];
     public $draw=[];
-    public function main($str){
-        $data=json_decode($str);
+	public $server;
+	public function __construct($server,$str){
+		$this->server=$server;
+		$data=json_decode($str);
         $this->draw=$this->read($data);
+	}
+    public function main(){
         $this->plugin();
         $bg=imagecreatefromstring(file_get_contents(Base::res('image/'.$this->draw['background'])));
         $this->main= imagecreatetruecolor($this->draw['width'],$this->draw['height']);
@@ -43,12 +47,17 @@ class Draw
     private function plugin(){
         foreach($this->draw['plugin'] as $plugin){
             $plugin_class='\\App\\Plugin\\'.$plugin['plugin'].'\\Main';
-            $p=new $plugin_class();
+            $p=new $plugin_class($this->server);
             foreach ($plugin['input'] as $key=>$value){
                 $plugin['input'][$key]=$this->input($value);
             }
             $p->run($plugin['input']);
             foreach($p->text as $key => $value){
+				if(!@is_string((string)$value)){
+					$value='null';
+				}else{
+					$value=(string)$value;
+				}
                 if(!is_null(@$plugin['name'])){
                     $key=$plugin['name'].'->'.$key;
                 }

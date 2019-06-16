@@ -22,3 +22,5 @@ Route::post('/home', 'HomeController@save')->name('home');
 
 Route::get('/-{id}', 'DrawController@png')->name('draw');
 Route::post('/-/base64', 'DrawController@base64')->name('base64');
+
+Route::post('/upload', 'HomeController@upload')->name('uploadimg');

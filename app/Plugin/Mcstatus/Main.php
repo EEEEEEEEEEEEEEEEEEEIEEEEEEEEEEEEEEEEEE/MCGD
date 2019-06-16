@@ -6,6 +6,10 @@ class Main
 {
     public $text=[];
     public $img=[];
+	public $server;
+	public function __construct($server){
+		$this->server=$server;
+	}
     public function run($input){
         $arr=explode(':',$input['host']);
         if(@$arr[1]){
